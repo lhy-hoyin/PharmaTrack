@@ -1,4 +1,5 @@
 import { Application, Router } from "@oak/oak";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { login, register } from "~middleware";
 import checkAuth from "~crypto/auth.ts";
 
@@ -10,6 +11,10 @@ const controller = new AbortController();
 router.post("/register", register);
 router.post("/login", login);
 
+app.use(oakCors({
+  origin: "http://127.0.0.1:3000",
+  optionsSuccessStatus: 200,
+}));
 app.use(router.allowedMethods());
 app.use(router.routes());
 app.use(authRouter.allowedMethods());

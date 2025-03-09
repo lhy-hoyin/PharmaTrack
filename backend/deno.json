@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch -A main.ts",
+    "refactor": "deno fmt && deno lint"
   },
   "imports": {
     "@db/sqlite": "jsr:@db/sqlite@^0.12.0",
