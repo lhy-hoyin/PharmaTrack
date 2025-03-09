@@ -32,7 +32,7 @@ const register = async (
   const { username, password } = registerData;
 
   const stmt = db.prepare(
-    `SELECT * FROM users WHERE username = '${username}';`
+    `SELECT * FROM users WHERE username = '${username}';`,
   );
 
   const row = stmt.get<User>();
