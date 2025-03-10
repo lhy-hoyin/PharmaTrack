@@ -4,29 +4,33 @@
     "description": "Frontend for PharmaTrack application",
     "main": "src/index.js",
     "scripts": {
-      "start": "react-scripts start",
-      "build": "react-scripts build",
-      "test": "react-scripts test",
-      "eject": "react-scripts eject"
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
     },
     "dependencies": {
-      "react": "^18.0.0",
-      "react-dom": "^18.0.0",
-      "react-router-dom": "^6.0.0"
+        "@chakra-ui/react": "^3.11.0",
+        "@emotion/react": "^11.14.0",
+        "next-themes": "^0.4.5",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-icons": "^5.5.0",
+        "react-router-dom": "^6.0.0"
     },
     "devDependencies": {
-      "react-scripts": "^5.0.0"
+        "react-scripts": "^5.0.0"
     },
     "browserslist": {
-      "production": [
-        ">0.2%",
-        "not dead",
-        "not op_mini all"
-      ],
-      "development": [
-        "last 1 chrome version",
-        "last 1 firefox version",
-        "last 1 safari version"
-      ]
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
-  }
+}
