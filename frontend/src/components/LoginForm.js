@@ -28,12 +28,14 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit}>
       <FormControl>
         <FormLabel htmlFor='username'>Username</FormLabel>
-        <Input type="text"
+        <Input id="login-username"
+          type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)} 
           required />
         <FormLabel htmlFor='password'>Password</FormLabel>
-        <Input type="password"
+        <Input id="login-password" 
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)} 
           required />
