@@ -17,10 +17,11 @@ const RegisterForm = () => {
     try {
       setSubmitting(true);
       await authService.register({ username, password });
-      setSubmitting(false);
       alert('Registration successful');
     } catch (error) {
-      alert('Registration failed');
+      alert("Registration " + error);
+    } finally {
+      setSubmitting(false);
     }
   };
 

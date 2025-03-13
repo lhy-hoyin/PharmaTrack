@@ -27,15 +27,13 @@ const checkAuth = async (
 
   const jwtFromCookie = await ctx.cookies.get("user");
   const authHeader = ctx.request.headers.get("Authorization");
-  console.info(
-    `Has Cookie: ${jwtFromCookie !== undefined}\nHas Auth Header: ${
-      authHeader !== null
-    }`,
-  );
-  console.info("Cookie", jwtFromCookie);
   const [, jwt] = authHeader ? authHeader.split(" ") : [null, null];
 
-  if (!jwt || !jwtFromCookie) {
+  console.info(`Has Cookie: ${jwtFromCookie !== undefined}`);
+  console.info(`Has Auth Header: ${authHeader !== null}`);
+
+  // For stronger auth, require both jwt and jwtFromCookie
+  if (!jwt && !jwtFromCookie) {
     ctx.response.status = 403;
     ctx.response.body = {
       message: "Missing credentials. Not authenticated.",
@@ -44,30 +42,39 @@ const checkAuth = async (
     return;
   }
 
-  if (jwt === jwtFromCookie) {
-    const payload1 = await verifyJwt(
-      jwtFromCookie,
-    );
+  // Weak auth, only checking from cookie
+  if (jwtFromCookie !== undefined) {
+    console.info("Cookie", jwtFromCookie);
+    const payload = await verifyJwt(jwtFromCookie);
+    console.log(payload);
 
-    const payload2 = await verifyJwt(
-      jwt,
-    );
-
-    if (payload1.user === payload2.user) {
-      ctx.response.status = 200;
-      ctx.response.body = {
-        message: "Authenticated",
-        status: 200,
-      };
-    }
-  } else {
-    ctx.response.status = 403;
+    ctx.response.status = 200;
     ctx.response.body = {
-      message: "Not authenticated",
-      status: 403,
+      message: "Authenticated",
+      status: 200,
     };
-    return;
   }
+
+  // Stronger auth
+  // if (jwt === jwtFromCookie) {
+  //   const payload1 = await verifyJwt(jwtFromCookie);
+  //   const payload2 = await verifyJwt(jwt);
+
+  //   if (payload1.user === payload2.user) {
+  //     ctx.response.status = 200;
+  //     ctx.response.body = {
+  //       message: "Authenticated",
+  //       status: 200,
+  //     };
+  //   }
+  // } else {
+  //   ctx.response.status = 403;
+  //   ctx.response.body = {
+  //     message: "Not authenticated",
+  //     status: 403,
+  //   };
+  //   return;
+  // }
 
   return await next();
 };

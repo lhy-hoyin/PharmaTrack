@@ -14,6 +14,7 @@ router.post("/login", login);
 app.use(oakCors({
   origin: "http://127.0.0.1:3000",
   optionsSuccessStatus: 200,
+  credentials: true, // Allow credentials (cookies) to be included in requests
 }));
 app.use(router.allowedMethods());
 app.use(router.routes());

@@ -1,18 +1,17 @@
 const API_URL = 'http://127.0.0.1:5555';
 
-const login = async (credentials) => {
+const login = async (creds) => {
   const response = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(credentials),
+    body: JSON.stringify(creds),
+    credentials: 'include',
   });
 
-  console.log(response);
-
   if (!response.ok) {
-    throw new Error('Login failed');
+    throw new Error(`${response.status} ${response.statusText}`);
   }
 
   return response.json();
@@ -28,7 +27,7 @@ const register = async (credentials) => {
   });
 
   if (!response.ok) {
-    throw new Error('Registration failed');
+    throw new Error(`${response.status} ${response.statusText}`);
   }
 
   return response.json();

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FormLabel,
   FormControl,
   Input,
   Button,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 
 const LoginForm = () => {
@@ -12,15 +14,20 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setSubmitting(true);
       await authService.login({ username, password });
-      setSubmitting(false);
-      alert('Login successful');
+      login();
+      navigate('/dashboard');
     } catch (error) {
-      alert('Login failed');
+      alert("Login " + error);
+    } finally {
+      setSubmitting(false);
     }
   };
 

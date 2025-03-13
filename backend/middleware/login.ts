@@ -62,7 +62,7 @@ const login = async (
     }
 
     await ctx.cookies.set("user", jwToken.jwt, {
-      httpOnly: true,
+      httpOnly: false, // more secure when true but can't be accessed by frontend
       secure: false,
       signed: false,
       sameSite: "lax",
