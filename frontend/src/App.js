@@ -3,7 +3,6 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import HomePage from './pages/HomePage';
 import './App.css';
@@ -13,7 +12,6 @@ const App = () => {
     <ChakraProvider>
       <AuthProvider>
         <Router>
-          <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
