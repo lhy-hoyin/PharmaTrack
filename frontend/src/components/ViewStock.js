@@ -48,20 +48,24 @@ const ViewStock = () => {
 
   return (
     <Box>
-      <Heading as="h1" size="lg" mb={4}>Medicine Stock</Heading>
+      <Heading as="h1" size="lg" mb={4}>Inventory Stock</Heading>
       <TableContainer>
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Medicine</Th>
-              <Th>Quantity</Th>
+              <Th>ID</Th>
+              <Th>Name</Th>
+              <Th>Manufacturer</Th>
+              <Th>Total Quantity</Th>
             </Tr>
           </Thead>
           <Tbody>
             {stock.map(item => (
               <Tr key={item.id}>
+                <Td>{item.product_id}</Td>
                 <Td>{item.name}</Td>
-                <Td>{item.quantity}</Td>
+                <Td>{item.manufacturer}</Td>
+                <Td>{item.total_qty}</Td>
               </Tr>
             ))}
           </Tbody>
