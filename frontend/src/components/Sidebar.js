@@ -34,8 +34,8 @@ const Sidebar = ({selectContent}) => {
 
         <h2>Prescriptions</h2>
         <UnorderedList>
-          <ListItem onClick={() => selectContent('view-prescription')}>
-            <Link>View Stock</Link>
+          <ListItem onClick={() => selectContent('view-prescriptions')}>
+            <Link>View Prescriptions</Link>
           </ListItem>
           <ListItem onClick={() => selectContent('prescription-history')}>
           <Link>History Log</Link>

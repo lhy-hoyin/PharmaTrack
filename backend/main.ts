@@ -1,6 +1,10 @@
 import { Application, Router } from "@oak/oak";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import { login, register } from "~middleware";
+import { 
+  login,
+  register,
+  viewStock,
+} from "~middleware";
 import checkAuth from "~crypto/auth.ts";
 
 const router = new Router();
@@ -10,6 +14,8 @@ const controller = new AbortController();
 
 router.post("/register", register);
 router.post("/login", login);
+
+authRouter.post("/auth/stock/view", viewStock);
 
 app.use(oakCors({
   origin: "http://127.0.0.1:3000",

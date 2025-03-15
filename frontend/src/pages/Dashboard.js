@@ -3,6 +3,7 @@ import { Button } from '@chakra-ui/react';
 import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import Sidebar from '../components/Sidebar.js';
+import ViewStock from '../components/ViewStock.js';
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -19,11 +20,11 @@ const Dashboard = () => {
         return <div>View orders</div>;
 
       case 'stock-monitor':
-        return <div>Stock Monitor</div>;
+        return <ViewStock />;
       case 'stock-history':
         return <div>Stock History Log</div>;
 
-      case 'view-prescription':
+      case 'view-prescriptions':
         return <div>View Prescription</div>;  
       case 'prescription-history':
         return <div>Prescriptions History Log</div>;

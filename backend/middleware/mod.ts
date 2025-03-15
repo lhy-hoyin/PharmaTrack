@@ -1,4 +1,6 @@
 import login from "./login.ts";
 import register from "./register.ts";
 
-export { login, register };
+import viewStock from "./auth/stock.ts";
+
+export { login, register, viewStock };
