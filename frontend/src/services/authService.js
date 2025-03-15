@@ -33,7 +33,20 @@ const register = async (credentials) => {
   return response.json();
 };
 
+const logout = async () => {
+  const response = await fetch(`${API_URL}/logout`, {
+    method: 'POST', 
+  });
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
 export default {
   login,
   register,
+  logout,
 };

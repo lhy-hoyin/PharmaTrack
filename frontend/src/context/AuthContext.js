@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import authService from '../services/authService.js';
 
 const AuthContext = createContext();
 
@@ -14,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     removeCookie('user');
     setIsAuthenticated(false);
+    authService.logout();
   };
 
   return (
