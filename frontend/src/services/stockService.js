@@ -15,8 +15,6 @@ const fetchStock = async () => {
   const responseJson = await response.json();
   const data = responseJson.message;
 
-  console.log(data)
-
   if (Array.isArray(data)) {
     if (data.length === 0)
         throw new Error("Your inventory is empty");

@@ -11,8 +11,10 @@ import {
   Alert,
   AlertIcon,
   Box,
-  Heading
+  Heading,
+  IconButton
 } from '@chakra-ui/react';
+import { RepeatIcon } from '@chakra-ui/icons';
 import stockService from '../services/stockService';
 
 const ViewStock = () => {
@@ -20,17 +22,18 @@ const ViewStock = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await stockService.fetchStock();
-        setStock(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  async function fetchData() {
+    try {
+      const data = await stockService.fetchStock();
+      setStock(data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -48,7 +51,14 @@ const ViewStock = () => {
 
   return (
     <Box>
-      <Heading as="h1" size="lg" mb={4}>Inventory Stock</Heading>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Heading as="h1" size="lg">Inventory Stock</Heading>
+        <IconButton
+          aria-label="Refresh Stock"
+          icon={<RepeatIcon />}
+          onClick={fetchData}
+        />
+      </Box>
       <TableContainer>
         <Table variant="simple">
           <Thead>
