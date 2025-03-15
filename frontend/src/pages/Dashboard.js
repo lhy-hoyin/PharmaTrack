@@ -35,7 +35,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <a href="/dashhboard"><img src="FIXME.png" /></a>
+        <a href="/dashboard"><img src="PharmaTrack-banner-50h.png" alt="PharmaTrack"/></a>
         <Button onClick={logout} colorScheme="teal">Logout</Button>
       </div>
       <div className="dashboard-content">
