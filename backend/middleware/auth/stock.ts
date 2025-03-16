@@ -1,10 +1,9 @@
 import type { RouterContext } from "@oak/oak/router";
-import db from "~database/products.ts";
-import Product from "~types/product.ts";
+import db from "~database/main.ts";
 
 const view = (
   ctx: RouterContext<
-    "/auth/do-something",
+    "/auth/stock/view",
     Record<string | number, string | undefined>,
     // deno-lint-ignore no-explicit-any
     Record<string, any>
@@ -12,13 +11,14 @@ const view = (
 ) => {
   const stmt = db.prepare(
     `
-    SELECT id, product_id, name, manufacturer, SUM(quantity) as total_qty
-    FROM products
-    GROUP BY product_id
+    SELECT p.id, p.name, p.manufacturer, SUM(s.quantity) as total_qty
+    FROM products p
+    JOIN stock s ON p.id = s.product_id
+    GROUP BY p.id, p.name, p.manufacturer
     `,
   );
 
-  const rows = stmt.all<Product>();
+  const rows = stmt.all();
 
   ctx.response.status = 200;
   ctx.response.body = {

@@ -72,7 +72,7 @@ const ViewStock = () => {
           <Tbody>
             {stock.map(item => (
               <Tr key={item.id}>
-                <Td>{item.product_id}</Td>
+                <Td>{item.id}</Td>
                 <Td>{item.name}</Td>
                 <Td>{item.manufacturer}</Td>
                 <Td>{item.total_qty}</Td>
