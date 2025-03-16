@@ -60,7 +60,7 @@ const ViewStock = () => {
         />
       </Box>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="striped" colorScheme='teal' size='sm'>
           <Thead>
             <Tr>
               <Th>ID</Th>
