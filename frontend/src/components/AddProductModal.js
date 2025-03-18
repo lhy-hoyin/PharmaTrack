@@ -80,12 +80,12 @@ const AddProductModal = ({ isOpen, onClose }) => {
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Supplier</FormLabel>
-              <FormHelperText>Put <i>N/A</i> if unknown</FormHelperText>
               <Input
                 placeholder="Supplier name"
                 value={supplier}
                 onChange={(e) => setSupplier(e.target.value)}
-              />
+                />
+              <FormHelperText>Put <i>N/A</i> if unknown</FormHelperText>
             </FormControl>
           </VStack>
         </ModalBody>
