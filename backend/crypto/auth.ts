@@ -44,9 +44,18 @@ const checkAuth = async (
 
   // Weak auth, only checking from cookie
   if (jwtFromCookie !== undefined) {
-    console.info("Cookie", jwtFromCookie);
-    const payload = await verifyJwt(jwtFromCookie);
-    console.log(payload);
+    //console.info("Cookie", jwtFromCookie);
+    try {
+      const payload = await verifyJwt(jwtFromCookie);
+      // console.log(payload);
+    } catch(_) {
+      ctx.response.status = 403;
+      ctx.response.body = {
+        message: "Not authenticated",
+        status: 403,
+      };
+      return;
+    }
 
     ctx.response.status = 200;
     ctx.response.body = {
