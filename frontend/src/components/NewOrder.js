@@ -12,8 +12,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-
 import OrderItemCard from "./OrderItemCard.js";
+import productService from '../services/productService.js';
 
 const demoAddress = (
   <Card>
@@ -34,32 +34,11 @@ const NewOrder = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // TODO: move into a service
-        const response = await fetch(`/auth/products/view`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-      
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-      
-        const responseJson = await response.json();
-        const data = responseJson.message;
-      
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid data format");
-        }
-        
-        // parse data
+        const data = await productService.fetchProducts();
         const parsedData = data.map(product => ({
           id: product.id,
           name: `${product.name} (${product.supplier})`,
         }));
-
         setProductOptions(parsedData);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -79,7 +58,7 @@ const NewOrder = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     if (orderItems.length < 1) {
       throw Error("Minimum order item is one.");
     }
