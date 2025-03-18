@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import { useAuth } from '../context/AuthContext';
-import authService from '../services/authService';
 import Sidebar from '../components/Sidebar.js';
+import NewOrder from '../components/NewOrder.js';
 import ViewStock from '../components/ViewStock.js';
 import "./Dashboard.css";
 
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (content) {
       case 'create-order':
-        return <div>Create order</div>;
+        return <NewOrder />;
       case 'approve-orders':  
         return <div>Approve orders</div>;
       case 'view-orders':

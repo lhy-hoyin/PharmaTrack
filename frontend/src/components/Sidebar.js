@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { UnorderedList, ListItem, Divider, Link } from '@chakra-ui/react';
+import React from 'react';
+import { UnorderedList, ListItem, Link } from '@chakra-ui/react';
 
 
 const Sidebar = ({selectContent}) => {
-    const [] = useState('procurement');
-
     return (
-        <div>
+      <div>
         <h2>Procurement</h2>
         <UnorderedList>
           <ListItem onClick={() => selectContent('create-order')}>
