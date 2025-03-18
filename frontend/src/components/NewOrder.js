@@ -1,7 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Divider,
+  VStack,
+  HStack,
+  Radio,
+  RadioGroup,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
 
 import OrderItemCard from "./OrderItemCard.js";
+
+const demoAddress = (
+  <Card>
+    <CardBody>
+    <Heading size='md'>PharmaTrack Hospital</Heading>
+    <Text>
+      123 Industrial Avenue 4<br/>
+      Novalandia 123456
+    </Text>
+    </CardBody>
+  </Card>
+);
 
 const NewOrder = () => {
   const [productOptions, setProductOptions] = useState([]);
@@ -36,31 +60,43 @@ const NewOrder = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
     if (orderItems.length < 1) {
-      throw Error("Minimum order item is one.")
+      throw Error("Minimum order item is one.");
     }
 
     // TODO: validation to ensure no duplicates
 
-    // 
+    // TODO: parse data into json format
 
     // TODO: API call to create purchase order
     console.log("Submitting order:", orderItems);
   };
 
   return (
-    <div>
-      {
-        // Billing Address
-
-        // Delivery Address
-      }
-
-      <Button colorScheme="blue" onClick={handleSubmit}>Submit Order</Button>
-
-      
-
+    <form onSubmit={handleSubmit}>
+      <HStack spacing={8} align="start">
+        <Box flex="1">
+          <Text fontWeight="bold" mb={2}>Bill To:</Text>
+          <RadioGroup defaultValue="billing1">
+            <VStack align="start">
+              <Radio value="billing1">{demoAddress}</Radio>
+              {/* Only one address as demo */}
+            </VStack>
+          </RadioGroup>
+        </Box>
+        <Box flex="1">
+          <Text fontWeight="bold" mb={2}>Deliver To:</Text>
+          <RadioGroup defaultValue="delivery1" >
+            <VStack align="start">
+              <Radio value="delivery1">{demoAddress}</Radio>
+              {/* Only one address as demo */}
+            </VStack>
+          </RadioGroup>
+        </Box>
+      </HStack>
+      <Button type="submit" colorScheme="blue" mt={4}>Submit Order</Button>
       <Divider my={4} />
 
       <VStack spacing={4}>
@@ -74,7 +110,7 @@ const NewOrder = () => {
         ))}
       </VStack>
       <Button colorScheme="green" onClick={addOrderItem} mt={4}>Add More Items</Button>
-    </div>
+    </form>
   );
 };
 
