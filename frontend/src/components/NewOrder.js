@@ -5,13 +5,13 @@ import {
   Card,
   CardBody,
   Divider,
-  VStack,
+  Heading,
   HStack,
   Radio,
   RadioGroup,
-  Heading,
   Text,
-} from '@chakra-ui/react';
+  VStack,
+} from "@chakra-ui/react";
 
 import OrderItemCard from "./OrderItemCard.js";
 
@@ -20,7 +20,7 @@ const demoAddress = (
     <CardBody>
     <Heading size='md'>PharmaTrack Hospital</Heading>
     <Text>
-      123 Industrial Avenue 4<br/>
+      123 Industrial Avenue 4<br />
       Novalandia 123456
     </Text>
     </CardBody>
@@ -37,12 +37,13 @@ const NewOrder = () => {
         // TODO
         // const response = await fetch('/api/products'); // Replace with actual API endpoint
         // const data = await response.json();
-        const data = [
-          {id: 1, name:'product 1'},
-          {id: 2, name:'product 2'},
-          {id: 3, name:'product 3'},
-        ]
-        setProductOptions(data);
+
+        const parsedData = [
+          { id: 1, name: "product 1" },
+          { id: 2, name: "product 2" },
+          { id: 3, name: "product 3" },
+        ];
+        setProductOptions(parsedData);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
@@ -56,7 +57,7 @@ const NewOrder = () => {
 
   const removeOrderItem = (id) => {
     if (orderItems.length > 1) {
-      setOrderItems(orderItems.filter(item => item.id !== id));
+      setOrderItems(orderItems.filter((item) => item.id !== id));
     }
   };
 
@@ -88,7 +89,7 @@ const NewOrder = () => {
         </Box>
         <Box flex="1">
           <Text fontWeight="bold" mb={2}>Deliver To:</Text>
-          <RadioGroup defaultValue="delivery1" >
+          <RadioGroup defaultValue="delivery1">
             <VStack align="start">
               <Radio value="delivery1">{demoAddress}</Radio>
               {/* Only one address as demo */}
@@ -109,7 +110,9 @@ const NewOrder = () => {
           />
         ))}
       </VStack>
-      <Button colorScheme="green" onClick={addOrderItem} mt={4}>Add More Items</Button>
+      <Button colorScheme="green" onClick={addOrderItem} mt={4}>
+        Add More Items
+      </Button>
     </form>
   );
 };

@@ -45,13 +45,18 @@ const ViewStock = () => {
       <Alert status="error">
         <AlertIcon />
         {error.message}
-    </Alert>
+      </Alert>
     );
   }
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={4}
+      >
         <Heading as="h1" size="lg">Inventory Stock</Heading>
         <IconButton
           aria-label="Refresh Stock"
@@ -60,7 +65,7 @@ const ViewStock = () => {
         />
       </Box>
       <TableContainer>
-        <Table variant="striped" colorScheme='teal' size='sm'>
+        <Table variant="striped" colorScheme="teal" size="sm">
           <Thead>
             <Tr>
               <Th>ID</Th>
@@ -70,7 +75,7 @@ const ViewStock = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {stock.map(item => (
+            {stock.map((item) => (
               <Tr key={item.id}>
                 <Td>{item.id}</Td>
                 <Td>{item.name}</Td>

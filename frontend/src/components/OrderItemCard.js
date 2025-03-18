@@ -2,21 +2,21 @@ import React from 'react';
 import {
   Box,
   HStack,
-  Select,
+  IconButton,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  IconButton,
-  useDisclosure
-} from '@chakra-ui/react';
-import { CloseIcon, AddIcon } from '@chakra-ui/icons';
+  Select,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import AddProductModal from "./AddProductModal.js";
 
 const OrderItemCard = ({ id, productOptions, onRemove }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();  
-  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} w="100%">
       <HStack spacing={4}>
@@ -35,7 +35,13 @@ const OrderItemCard = ({ id, productOptions, onRemove }) => {
           aria-label="Add Product"
         />
 
-        <NumberInput maxW={20} min={1} max={999} defaultValue={1} allowMouseWheel>
+        <NumberInput
+          maxW={20}
+          min={1}
+          max={999}
+          defaultValue={1}
+          allowMouseWheel
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />

@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
-  Textarea,
-  VStack,
-  ModalOverlay,
   Modal,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
-  FormHelperText,
-  useToast ,
-} from '@chakra-ui/react';
+  ModalHeader,
+  ModalOverlay,
+  Textarea,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 
 const AddProductModal = ({ isOpen, onClose }) => {
   const [productName, setProductName] = useState('');
@@ -84,8 +84,10 @@ const AddProductModal = ({ isOpen, onClose }) => {
                 placeholder="Supplier name"
                 value={supplier}
                 onChange={(e) => setSupplier(e.target.value)}
-                />
-              <FormHelperText>Put <i>N/A</i> if unknown</FormHelperText>
+              />
+              <FormHelperText>
+                Put <i>N/A</i> if unknown
+              </FormHelperText>
             </FormControl>
           </VStack>
         </ModalBody>
