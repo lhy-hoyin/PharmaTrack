@@ -15,13 +15,14 @@ const fetchStock = async () => {
   const responseJson = await response.json();
   const data = responseJson.message;
 
-  if (Array.isArray(data)) {
-    if (data.length === 0)
-        throw new Error("Your inventory is empty");
-    return data;
-  } else {
+  if (!Array.isArray(data)) {
     throw new Error("Invalid data format");
   }
+  if (data.length === 0) {
+    throw new Error("Your inventory is empty");
+  }
+
+  return data;
 };
 
 export default {

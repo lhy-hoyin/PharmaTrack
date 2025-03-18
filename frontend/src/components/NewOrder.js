@@ -34,15 +34,32 @@ const NewOrder = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // TODO
-        // const response = await fetch('/api/products'); // Replace with actual API endpoint
-        // const data = await response.json();
+        // TODO: move into a service
+        const response = await fetch(`/auth/products/view`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+      
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+      
+        const responseJson = await response.json();
+        const data = responseJson.message;
+      
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format");
+        }
+        
+        // parse data
+        const parsedData = data.map(product => ({
+          id: product.id,
+          name: `${product.name} (${product.supplier})`,
+        }));
 
-        const parsedData = [
-          { id: 1, name: "product 1" },
-          { id: 2, name: "product 2" },
-          { id: 3, name: "product 3" },
-        ];
         setProductOptions(parsedData);
       } catch (error) {
         console.error("Failed to fetch products:", error);

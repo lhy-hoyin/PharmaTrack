@@ -71,23 +71,20 @@ const AddProductModal = ({ isOpen, onClose }) => {
               />
             </FormControl>
             <FormControl isRequired>
-              <FormLabel>Manufacturer</FormLabel>
-              <Input
-                placeholder="Manufacturer name"
-                value={manufacturer}
-                onChange={(e) => setManufacturer(e.target.value)}
-              />
-            </FormControl>
-            <FormControl isRequired>
               <FormLabel>Supplier</FormLabel>
               <Input
                 placeholder="Supplier name"
                 value={supplier}
                 onChange={(e) => setSupplier(e.target.value)}
               />
-              <FormHelperText>
-                Put <i>N/A</i> if unknown
-              </FormHelperText>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Manufacturer</FormLabel>
+              <Input
+                placeholder="Manufacturer name"
+                value={manufacturer}
+                onChange={(e) => setManufacturer(e.target.value)}
+              />
             </FormControl>
           </VStack>
         </ModalBody>
