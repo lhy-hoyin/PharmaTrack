@@ -14,6 +14,7 @@ import {
   ModalBody,
   ModalFooter,
   FormHelperText,
+  useToast ,
 } from '@chakra-ui/react';
 
 const AddProductModal = ({ isOpen, onClose }) => {
@@ -21,13 +22,28 @@ const AddProductModal = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState('');
   const [manufacturer, setManufacturer] = useState('');
   const [supplier, setSupplier] = useState('');
+  const toast = useToast();
 
   const onSubmit = () => {
-    console.log('Product Details:', { productName, description, manufacturer, supplier });
+    const submitError = 'Something went wrong';
 
-    // TODO: do an API call to add to backend database
+    const addProductPromise = new Promise((resolve, reject) => {
+      // TODO: do an API call to add to backend database
+      console.log('Product Details:', { productName, description, manufacturer, supplier });
+      setTimeout(() => resolve(200), 3000);
+    })
+    .then((response) => {
+      onClose(); // close modal
+    })
+    .catch((error) => {
+      submitError = error;
+    });
 
-    onClose(); // Call onClose after onSubmit
+    toast.promise(addProductPromise, {
+      loading: { title: 'Adding product', description: 'Please wait' },
+      success: { title: 'Product added', description: 'Looks great' },
+      error: { title: 'Failed', description: submitError },
+    });
   };
 
   return (
