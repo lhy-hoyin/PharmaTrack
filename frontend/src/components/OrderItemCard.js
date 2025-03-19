@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   HStack,
@@ -16,11 +16,17 @@ import AddProductModal from "./AddProductModal.js";
 
 const OrderItemCard = ({ id, productOptions, onRemove }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedProduct, setSelectedProduct] = useState("");
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} w="100%">
       <HStack spacing={4}>
-        <Select placeholder="Select product">
+        <Select
+          placeholder="Select product"
+          value={selectedProduct}
+          onChange={(e) => setSelectedProduct(e.target.value)}
+          isInvalid={selectedProduct === ""}
+        >
           {productOptions.map((product) => (
             <option key={product.id} value={product.id}>
               {product.name}
