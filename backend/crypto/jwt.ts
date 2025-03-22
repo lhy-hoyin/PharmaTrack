@@ -33,6 +33,7 @@ const generateJwt = async (payload: User | undefined, origin: string) => {
     exp: getNumericDate(nbf),
     aud: origin,
     user: payload.username,
+    uid: payload.id
   }, key);
 
   return { jwt, nbf };
@@ -41,10 +42,10 @@ const generateJwt = async (payload: User | undefined, origin: string) => {
 /**
  * Verifies the signature of the JWT
  * @param jwt The JWT signature
- * @returns `string` value as the username.
+ * @returns `number` value of uid and `string` value as the username.
  */
 const verifyJwt = async (jwt: string) => {
-  const payload: { user: string } = await verify(
+  const payload: { uid: number, user: string } = await verify(
     jwt,
     key,
   );

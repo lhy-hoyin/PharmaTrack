@@ -29,8 +29,9 @@ const checkAuth = async (
   const authHeader = ctx.request.headers.get("Authorization");
   const [, jwt] = authHeader ? authHeader.split(" ") : [null, null];
 
-  console.info(`Has Cookie: ${jwtFromCookie !== undefined}`);
-  console.info(`Has Auth Header: ${authHeader !== null}`);
+  console.info(`Has Cookie: ${jwtFromCookie !== undefined} | `
+    + `Has Auth Header: ${authHeader !== null}`
+  );
 
   // For stronger auth, require both jwt and jwtFromCookie
   if (!jwt && !jwtFromCookie) {
@@ -47,7 +48,7 @@ const checkAuth = async (
     //console.info("Cookie", jwtFromCookie);
     try {
       const payload = await verifyJwt(jwtFromCookie);
-      // console.log(payload);
+      // console.log("payload", payload);
     } catch(_) {
       ctx.response.status = 403;
       ctx.response.body = {
