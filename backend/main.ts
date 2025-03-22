@@ -3,7 +3,8 @@ import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import {
   login, logout, register,
   viewProducts, addProduct,
-  viewStock
+  orderPurchase,
+  viewStock,
 } from "~middleware";
 import checkAuth from "~crypto/auth.ts";
 
@@ -18,6 +19,7 @@ router.post("/logout", logout);
 
 authRouter.get("/auth/products/view", viewProducts);
 authRouter.post("/auth/products/add", addProduct);
+authRouter.post("/auth/orders/purchase", orderPurchase);
 authRouter.post("/auth/stock/view", viewStock);
 
 app.use(oakCors({

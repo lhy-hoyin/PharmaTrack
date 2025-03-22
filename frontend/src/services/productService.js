@@ -35,7 +35,7 @@ const addProduct = async (productData) => {
     throw new Error(`${response.status} ${response.statusText}`);
   }
 
-  return await response.json(); // Return the parsed JSON response
+  return await response.json();
 };
 
 export default {

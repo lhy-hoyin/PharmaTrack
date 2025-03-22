@@ -24,6 +24,18 @@ const create_tables_command = `
                 quantity INTEGER NOT NULL,
                 FOREIGN KEY(product_id) REFERENCES products(id)
         );
+        CREATE TABLE IF NOT EXISTS purchase_orders(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp INTEGER NOT NULL,
+                items TEXT NOT NULL,
+                bill_to TEXT NOT NULL,
+                deliver_to TEXT NOT NULL,
+                requester INTEGER NOT NULL,
+                approver INTEGER,
+                status TEXT NOT NULL,
+                FOREIGN KEY(requester) REFERENCES users(id),
+                FOREIGN KEY(approver) REFERENCES users(id)
+        );
 `;
 
 if (db.open) {

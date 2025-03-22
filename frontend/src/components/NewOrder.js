@@ -21,7 +21,9 @@ import { AddIcon } from "@chakra-ui/icons";
 import OrderItemCard from "./OrderItemCard.js";
 import AddProductModal from "./AddProductModal.js";
 import productService from '../services/productService.js';
+import orderService from '../services/orderService.js';
 
+const demoAddStr = "PharmaTrack Hospital, 123 Industrial Avenue 4, Novalandia 123456"
 const demoAddress = (
   <Card>
     <CardBody>
@@ -83,11 +85,9 @@ const NewOrder = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setAlert(null);
-
-    console.log("Submitting order:", orderItems);
 
     // Check minimum order
     if (orderItems.length < 1) {
@@ -115,11 +115,17 @@ const NewOrder = () => {
       });
     }
 
-    // Parse orderItems into JSON string format
-    const orderData = JSON.stringify(orderItems.map(({ id, ...rest }) => rest));
-    console.log("Parsed order data as JSON string:", orderData);
-
-    // TODO: API call to create purchase order
+    // API call to create purchase order
+    try {
+      const orderData = orderItems.map(({ id, ...rest }) => rest);
+      await orderService.order(orderData, demoAddStr, demoAddStr);
+    } catch (error) {
+      console.error("Failed to create order:", error);
+      setAlert({
+        title: 'Order Submission Failed',
+        description: 'There was an error submitting your order. Please try again.'
+      });
+    }
   };
 
   return (
