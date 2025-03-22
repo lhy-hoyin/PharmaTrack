@@ -1,6 +1,10 @@
 import { Application, Router } from "@oak/oak";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import { login, logout, register, viewProducts, viewStock } from "~middleware";
+import {
+  login, logout, register,
+  viewProducts, addProduct,
+  viewStock
+} from "~middleware";
 import checkAuth from "~crypto/auth.ts";
 
 const router = new Router();
@@ -13,7 +17,7 @@ router.post("/login", login);
 router.post("/logout", logout);
 
 authRouter.get("/auth/products/view", viewProducts);
-// authRouter.post("/auth/products/add", addProduct); //TODO
+authRouter.post("/auth/products/add", addProduct);
 authRouter.post("/auth/stock/view", viewStock);
 
 app.use(oakCors({

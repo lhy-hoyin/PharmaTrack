@@ -21,6 +21,23 @@ const fetchProducts = async () => {
   return data;
 }
 
+const addProduct = async (productData) => {
+  const response = await fetch(`/auth/products/add`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(productData),
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+
+  return await response.json(); // Return the parsed JSON response
+};
+
 export default {
-    fetchProducts,
+    fetchProducts, addProduct
 };

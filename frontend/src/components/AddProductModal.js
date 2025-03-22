@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   FormControl,
-  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -16,6 +15,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import productService from '../services/productService.js';
 
 const AddProductModal = ({ isOpen, onClose }) => {
   const [productName, setProductName] = useState('');
@@ -25,24 +25,24 @@ const AddProductModal = ({ isOpen, onClose }) => {
   const toast = useToast();
 
   const onSubmit = () => {
-    const submitError = 'Something went wrong';
-
-    const addProductPromise = new Promise((resolve, reject) => {
-      // TODO: do an API call to add to backend database
-      console.log('Product Details:', { productName, description, manufacturer, supplier });
-      setTimeout(() => resolve(200), 3000);
+    // Promise to add product into backend server
+    const addProductPromise = productService.addProduct({
+      name: productName,
+      description,
+      manufacturer,
+      supplier,
     })
     .then((response) => {
       onClose(); // close modal
-    })
-    .catch((error) => {
-      submitError = error;
     });
 
     toast.promise(addProductPromise, {
       loading: { title: 'Adding product', description: 'Please wait' },
       success: { title: 'Product added', description: 'Looks great' },
-      error: { title: 'Failed', description: submitError },
+      error: (error) => ({
+        title: 'Failed',
+        description: error.message || 'Something went wrong',
+      }),
     });
   };
 

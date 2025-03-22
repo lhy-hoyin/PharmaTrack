@@ -1,5 +1,6 @@
 import type { RouterContext } from "@oak/oak/router";
 import db from "~database/main.ts";
+import Product from "~types/product.ts";
 
 const view = (
   ctx: RouterContext<
@@ -25,4 +26,74 @@ const view = (
   return;
 };
 
-export default view;
+const add = async (
+  ctx: RouterContext<
+    "/auth/products/add",
+    Record<string | number, string | undefined>,
+    // deno-lint-ignore no-explicit-any
+    Record<string, any>
+  >,
+) => {
+  const data: Product | undefined = await ctx.request.body.json();
+
+  if (
+    !data || 
+    !data.name?.trim() ||
+    !data.manufacturer?.trim() ||
+    !data.supplier?.trim()
+  ) {
+    ctx.response.status = 422;
+    ctx.response.body = {
+      message: "Missing or empty field(s).",
+      status: 422,
+    };
+    return;
+  }
+
+  const { name, description, manufacturer, supplier } = data;
+
+  const stmt = db.prepare(
+    `
+    SELECT * FROM products
+    WHERE name = '${name}' 
+    AND manufacturer = '${manufacturer}'
+    AND supplier = '${supplier}';
+    `,
+  );
+
+  const row = stmt.get<Product>();
+  if (row) {
+    // Product exists in database
+    ctx.response.status = 409;
+    ctx.response.body = {
+      message: 'Product already exists.',
+      status: 409,
+    };
+    return;
+  }
+  
+  const changes = db.exec(
+    `
+    INSERT INTO products(name, description, manufacturer, supplier)
+    VALUES ('${name}', '${description}', '${manufacturer}', '${supplier}');
+    `,
+  );
+
+  if (changes > 0) {
+    ctx.response.status = 200;
+    ctx.response.body = {
+      message: `Product added.`,
+      status: 200,
+    };
+    return;
+  }
+
+  ctx.response.status = 503;
+  ctx.response.body = {
+    message: `Server Error.`,
+    status: 503,
+  };
+  return;
+};
+
+export { view, add };
