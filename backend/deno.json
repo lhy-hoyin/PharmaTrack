@@ -13,7 +13,7 @@
     "@std/encoding": "jsr:@std/encoding@^1.0.7",
     "@zaubrik/djwt": "jsr:@zaubrik/djwt@^3.0.2",
     "~middleware": "./middleware/mod.ts",
-    "~database/": "./database/",
+    "~database": "./database/main.ts",
     "~crypto/": "./crypto/",
     "~types/": "./types/"
   }

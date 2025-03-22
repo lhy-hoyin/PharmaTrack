@@ -1,5 +1,5 @@
 import type { RouterContext } from "@oak/oak/router";
-import db from "~database/main.ts";
+import db from "~database";
 import Product from "~types/product.ts";
 
 const view = (

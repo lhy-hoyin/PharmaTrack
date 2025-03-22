@@ -1,7 +1,7 @@
 import type { RouterContext } from "@oak/oak";
 import { argon2Verify } from "~crypto/pwd.ts";
 import { generateJwt } from "~crypto/jwt.ts";
-import db from "~database/users.ts";
+import db from "~database";
 import type User from "~types/user.ts";
 import { LoginData } from "~types/auth_request.ts";
 

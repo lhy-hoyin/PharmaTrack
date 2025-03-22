@@ -2,7 +2,7 @@ import { crypto } from "@std/crypto";
 import { encodeBase64 } from "@std/encoding";
 import type { RouterContext } from "@oak/oak";
 import { argon2Hasher } from "~crypto/pwd.ts";
-import db from "~database/users.ts";
+import db from "~database";
 import type User from "~types/user.ts";
 import { RegisterData } from "~types/auth_request.ts";
 
