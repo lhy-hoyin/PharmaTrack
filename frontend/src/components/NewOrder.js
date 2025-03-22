@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
   Box,
   Button,
   Card,
@@ -33,6 +37,7 @@ const demoAddress = (
 const NewOrder = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
+  const [alert, setAlert] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -80,16 +85,41 @@ const NewOrder = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setAlert(null);
+
+    console.log("Submitting order:", orderItems);
+
+    // Check minimum order
     if (orderItems.length < 1) {
-      throw Error("Minimum order item is one.");
+      return setAlert({
+        title: 'Minimum order item',
+        description: 'You need to order at least one item.'
+      });
     }
 
-    // TODO: validation to ensure no duplicates
+    // Check no empty items
+    if (orderItems.filter((item) => item.product === null).length !== 0) {
+      return setAlert({
+        title: 'Invalid product(s)',
+        description: 'Remove item(s) which are blank.'
+      });
+    }
 
-    // TODO: parse data into json format
+    // Validate no duplicate products
+    const productIds = orderItems.map(item => item.product);
+    const hasDuplicates = productIds.some((id, index) => productIds.indexOf(id) !== index);
+    if (hasDuplicates) {
+      return setAlert({
+        title: 'Duplicate products',
+        description: 'Each product in the order must be unique.'
+      });
+    }
+
+    // Parse orderItems into JSON string format
+    const orderData = JSON.stringify(orderItems.map(({ id, ...rest }) => rest));
+    console.log("Parsed order data as JSON string:", orderData);
 
     // TODO: API call to create purchase order
-    console.log("Submitting order:", orderItems);
   };
 
   return (
@@ -114,6 +144,15 @@ const NewOrder = () => {
           </RadioGroup>
         </Box>
       </HStack>
+
+      {alert != null ? 
+        <Alert status='error'>
+          <AlertIcon />
+          <AlertTitle>{alert?.title}</AlertTitle>
+          <AlertDescription>{alert.description}</AlertDescription>
+        </Alert>
+      : <></>}
+
       <Button type="submit" colorScheme="green" mt={4}>Submit Order</Button>
       <Divider my={4} />
 
