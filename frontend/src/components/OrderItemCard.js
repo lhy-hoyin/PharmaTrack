@@ -9,13 +9,12 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import AddProductModal from "./AddProductModal.js";
+import { DeleteIcon } from "@chakra-ui/icons";
 
-const OrderItemCard = ({ id, productOptions, onRemove }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const OrderItemCard = ({ 
+  id, productOptions, setProductOptions, onItemChange, validateRemoval, onRemove 
+}) => {
   const [selectedProduct, setSelectedProduct] = useState("");
 
   return (
@@ -56,14 +55,14 @@ const OrderItemCard = ({ id, productOptions, onRemove }) => {
         </NumberInput>
 
         <IconButton
-          icon={<CloseIcon />}
+          icon={<DeleteIcon />}
           colorScheme="red"
+          aria-label="remove"
+          variant="outline"
           onClick={() => onRemove(id)}
-          isDisabled={productOptions.length === 1}
+          isDisabled={!validateRemoval()}
         />
       </HStack>
-
-      <AddProductModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

@@ -11,8 +11,11 @@ import {
   RadioGroup,
   Text,
   VStack,
+  useDisclosure
 } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 import OrderItemCard from "./OrderItemCard.js";
+import AddProductModal from "./AddProductModal.js";
 import productService from '../services/productService.js';
 
 const demoAddress = (
@@ -29,7 +32,9 @@ const demoAddress = (
 
 const NewOrder = () => {
   const [productOptions, setProductOptions] = useState([]);
-  const [orderItems, setOrderItems] = useState([{ id: Date.now() }]);
+  const [orderItems, setOrderItems] = useState([]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,15 +50,24 @@ const NewOrder = () => {
       }
     };
     fetchProducts();
+    addOrderItem();
   }, []);
 
+  const checkCanRemove = () => {
+    return orderItems.length > 1
+  }
+
   const addOrderItem = () => {
-    setOrderItems([...orderItems, { id: Date.now() }]);
+    const _id = Date.now();
+    setOrderItems([
+      ...orderItems,
+      { id: _id, product: null }
+    ]);
   };
 
   const removeOrderItem = (id) => {
     if (orderItems.length > 1) {
-      setOrderItems(orderItems.filter((item) => item.id !== id));
+      setOrderItems(orderItems.filter((item) => item.id !== id))
     }
   };
 
@@ -93,7 +107,7 @@ const NewOrder = () => {
           </RadioGroup>
         </Box>
       </HStack>
-      <Button type="submit" colorScheme="blue" mt={4}>Submit Order</Button>
+      <Button type="submit" colorScheme="green" mt={4}>Submit Order</Button>
       <Divider my={4} />
 
       <VStack spacing={4}>
@@ -102,13 +116,26 @@ const NewOrder = () => {
             key={item.id}
             id={item.id}
             productOptions={productOptions}
+            validateRemoval={checkCanRemove}
             onRemove={removeOrderItem}
           />
         ))}
       </VStack>
-      <Button colorScheme="green" onClick={addOrderItem} mt={4}>
-        Add More Items
-      </Button>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button colorScheme="blue" onClick={addOrderItem} margin={2}>
+          Add More Items
+        </Button>
+        <Button
+          leftIcon={<AddIcon />}
+          colorScheme="blue"
+          onClick={onOpen}
+          margin={2}
+          >
+          Add Product
+        </Button>
+        <AddProductModal isOpen={isOpen} onClose={onClose} />
+      </div>
     </form>
   );
 };
