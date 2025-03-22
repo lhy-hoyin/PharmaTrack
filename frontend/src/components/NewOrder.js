@@ -61,7 +61,7 @@ const NewOrder = () => {
     const _id = Date.now();
     setOrderItems([
       ...orderItems,
-      { id: _id, product: null }
+      { id: _id, product: null, qty: null }
     ]);
   };
 
@@ -69,6 +69,13 @@ const NewOrder = () => {
     if (orderItems.length > 1) {
       setOrderItems(orderItems.filter((item) => item.id !== id))
     }
+  };
+
+  const handleItemChange = (id, product_id, qty) => {
+    setOrderItems(orderItems.map((item) =>
+        item.id === id ? { ...item, product: product_id, qty: qty } : item
+      )
+    );
   };
 
   const handleSubmit = (e) => {
@@ -116,6 +123,7 @@ const NewOrder = () => {
             key={item.id}
             id={item.id}
             productOptions={productOptions}
+            onItemChange={handleItemChange}
             validateRemoval={checkCanRemove}
             onRemove={removeOrderItem}
           />

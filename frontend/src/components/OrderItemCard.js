@@ -13,9 +13,10 @@ import {
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const OrderItemCard = ({ 
-  id, productOptions, setProductOptions, onItemChange, validateRemoval, onRemove 
+  id, productOptions, onItemChange, validateRemoval, onRemove 
 }) => {
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} w="100%">
@@ -23,7 +24,11 @@ const OrderItemCard = ({
         <Select
           placeholder="Select product"
           value={selectedProduct}
-          onChange={(e) => setSelectedProduct(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value
+            setSelectedProduct(value)
+            onItemChange(id, value, quantity)
+          }}
           isInvalid={selectedProduct === ""}
         >
           {productOptions.map((product) => (
@@ -33,18 +38,16 @@ const OrderItemCard = ({
           ))}
         </Select>
 
-        <IconButton
-          icon={<AddIcon />}
-          colorScheme="blue"
-          onClick={onOpen}
-          aria-label="Add Product"
-        />
-
         <NumberInput
           maxW={20}
           min={1}
           max={999}
-          defaultValue={1}
+          value={quantity}
+          onChange={(valStr) => {
+            const value = parseInt(valStr)
+            setQuantity(value)
+            onItemChange(id, selectedProduct, value)
+          }}
           allowMouseWheel
         >
           <NumberInputField />
