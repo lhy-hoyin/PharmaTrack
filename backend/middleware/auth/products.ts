@@ -5,7 +5,7 @@ import Product from "~types/product.ts";
 const view = (
   ctx: RouterContext<
     "/auth/products/view",
-    Record<string | number, string | undefined>,
+    { id: string } & Record<string | number, string | undefined>,
     // deno-lint-ignore no-explicit-any
     Record<string, any>
   >,
@@ -21,6 +21,48 @@ const view = (
   ctx.response.status = 200;
   ctx.response.body = {
     message: rows,
+    status: 200,
+  };
+  return;
+};
+
+const info = (
+  ctx: RouterContext<
+    "/auth/products/:id",
+    { id: string } & Record<string | number, string | undefined>,
+    // deno-lint-ignore no-explicit-any
+    Record<string, any>
+  >,
+) => {
+  // Extract and validate id
+  const id = Number(ctx.params.id);
+  if (!id) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Product ID is required" };
+    return;
+  }
+  else if (!Number.isInteger(id)) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Product ID should be a integer" };
+    return;
+  }
+
+  const stmt = db.prepare(
+    `
+    SELECT * FROM products
+    WHERE id = ?;
+    `,
+  );
+  const row = stmt.get<Product>(id);
+  if (!row) {
+    ctx.response.status = 404;
+    ctx.response.body = { error: "Order not found" };
+    return;
+  }
+
+  ctx.response.status = 200;
+  ctx.response.body = {
+    message: row,
     status: 200,
   };
   return;
@@ -96,4 +138,4 @@ const add = async (
   return;
 };
 
-export { view, add };
+export { view, info, add };

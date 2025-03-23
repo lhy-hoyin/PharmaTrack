@@ -1,0 +1,206 @@
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Card,
+  CardBody,
+  Divider,
+  Flex,
+  Text,
+  Heading,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Spinner,
+  Center,
+  HStack,
+} from '@chakra-ui/react';
+import {
+    Step,
+    StepDescription,
+    StepIcon,
+    StepIndicator,
+    StepNumber,
+    StepSeparator,
+    StepStatus,
+    StepTitle,
+    Stepper,
+    useSteps,
+} from '@chakra-ui/react'
+  import { useParams } from 'react-router-dom';
+import orderService from '../services/orderService';
+import productService from '../services/productService';
+
+const PurchaseOrder = () => {
+  const steps = [
+    { title: 'Created', description: '' },
+    { title: 'Approved', description: '' },
+    { title: 'Ordered', description: '' },
+    { title: 'Delivered', description: '' },
+    { title: 'Completed', description: '' },
+  ]
+
+  const [poDetails, setPoDetails] = useState(null);
+  const [items, setItems] = useState([]);
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { id } = useParams();
+
+  const { activeStep, setActiveStep } = useSteps({
+    index: 0,
+    count: steps.length,
+  })
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const details = await orderService.getDetails(id);
+      setPoDetails(details);
+
+      const index = steps.findIndex(step => step.title === details.status);
+      setActiveStep(index + 1);
+
+      // const itemDetails = await Promise.all(
+      //   details.items.map(async (item) => {
+      //     const product = await productService.getProduct(item.id);
+      //     return { ...product, quantity: item.quantity };
+      //   })
+      // );
+      // setItems(itemDetails);
+    };
+
+    fetchDetails();
+  }, []);
+
+  if (!poDetails)
+    return (
+      <Center h="100vh">
+        <Spinner size="xl" />
+      </Center>
+    );
+
+  return (
+    <Box p={5} spacing={10}>
+      <Heading size="md">Purchase Order Details</Heading>
+      <Stepper spacing={8} index={activeStep}>
+      {steps.map((step, index) => (
+        <Step key={index}>
+          <StepIndicator>
+            <StepStatus
+              complete={<StepIcon />}
+              incomplete={<StepNumber />}
+              active={<StepNumber />}
+            />
+          </StepIndicator>
+
+          <Box flexShrink='0'>
+            <StepTitle>{step.title}</StepTitle>
+            <StepDescription>{step.description}</StepDescription>
+          </Box>
+
+          <StepSeparator />
+        </Step>
+      ))}
+      </Stepper>
+
+      {/* Addresses */}
+      <HStack spacing={8} align="start">
+        <Box flex="1">
+          <Text fontWeight="bold" mb={2}>Bill To:</Text>
+          <Card>
+              <CardBody>
+              {/* <Heading size='md'>PharmaTrack Hospital</Heading> */}
+              <Text>
+                {poDetails.bill_to}
+              </Text>
+              </CardBody>
+            </Card>
+        </Box>
+        <Box flex="1">
+          <Text fontWeight="bold" mb={2}>Deliver To:</Text>
+          <Card>
+              <CardBody>
+              {/* <Heading size='md'>PharmaTrack Hospital</Heading> */}
+              <Text>
+                {poDetails.deliver_to}
+              </Text>
+              </CardBody>
+            </Card>
+        </Box>
+      </HStack>
+
+      {/* PO Details */}
+      <Box mt={5}>
+        
+        <Box>PO ID: {poDetails.id}</Box>
+        <Box>Timestamp: {poDetails.timestamp}</Box>
+        <Box>Requester: {poDetails.requester}</Box>
+        <Box>Approver: {poDetails.approver}</Box>
+      </Box>
+
+      <Divider my={5} />
+
+      {/* Items Table */}
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Name</Th>
+            <Th>Manufacturer</Th>
+            <Th>Quantity</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {items.map((item) => (
+            <Tr key={item.id}>
+              <Td>{item.id}</Td>
+              <Td>{item.name}</Td>
+              <Td>{item.manufacturer}</Td>
+              <Td>{item.quantity}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+
+      {/* Approve Button */}
+      {poDetails.status === 'Created' && (
+        <Flex justify="flex-end" mt={5}>
+          <Button colorScheme="blue" onClick={onOpen}>
+            Approve
+          </Button>
+        </Flex>
+      )}
+
+      {/* Confirmation Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Approval</ModalHeader>
+          <ModalBody>
+            You are about to approve PO#{poDetails.id} created by{' '}
+            {poDetails.requester}.
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={() => { /* Approve logic */ }}>
+              Approve
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
+};
+
+export default PurchaseOrder;

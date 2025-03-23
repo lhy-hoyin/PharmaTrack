@@ -21,6 +21,23 @@ const fetchProducts = async () => {
   return data;
 }
 
+const getProductInfo = async (id) => {
+  const response = await fetch(`/auth/product/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+
+  const responseJson = await response.json();
+  return responseJson.message;
+};
+
 const addProduct = async (productData) => {
   const response = await fetch(`/auth/products/add`, {
     method: 'POST',
@@ -39,5 +56,5 @@ const addProduct = async (productData) => {
 };
 
 export default {
-    fetchProducts, addProduct
+    fetchProducts, getProductInfo, addProduct
 };
