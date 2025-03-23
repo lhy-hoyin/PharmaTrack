@@ -1,5 +1,5 @@
 const getDetails = async(id) => {
-  const response = await fetch(`/auth/orders/view/${id}`, {
+  const response = await fetch(`/auth/orders/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
