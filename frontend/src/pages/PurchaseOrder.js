@@ -37,7 +37,14 @@ import {
     Stepper,
     useSteps,
 } from '@chakra-ui/react'
-  import { useParams } from 'react-router-dom';
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react'
+
+import { useParams } from 'react-router-dom';
 import orderService from '../services/orderService';
 import productService from '../services/productService';
 
@@ -52,6 +59,8 @@ const PurchaseOrder = () => {
 
   const [poDetails, setPoDetails] = useState(null);
   const [items, setItems] = useState([]);
+  const [alert, setAlert] = useState();
+  
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams();
@@ -63,9 +72,16 @@ const PurchaseOrder = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
+      setAlert(null);
+      
+      // TODO: handle error when loading
+      try {
+
+      // Fetch PO details
       const details = await orderService.getDetails(id);
       setPoDetails(details);
 
+      // Setup Stepper stage using status
       const index = steps.findIndex(step => step.title === details.status);
       setActiveStep(index + 1);
 
@@ -76,17 +92,35 @@ const PurchaseOrder = () => {
       //   })
       // );
       // setItems(itemDetails);
+      }
+      catch(error) {
+        console.error(error)
+        return setAlert({
+          type: 'error',
+          title: 'Something went wrong',
+          description: error.message
+        });
+      }
     };
 
     fetchDetails();
   }, []);
 
-  if (!poDetails)
-    return (
-      <Center h="100vh">
-        <Spinner size="xl" />
-      </Center>
-    );
+  if (!poDetails) {
+    return (<>{ 
+      alert == null ?
+        <Center h="100vh">
+          <Spinner size="xl" />
+        </Center>
+      :
+        <Alert status={alert.type}>
+          <AlertIcon />
+          <AlertTitle>{alert?.title}</AlertTitle>
+          <AlertDescription>{alert.description}</AlertDescription>
+        </Alert>
+    }</>);
+  }
+  
 
   return (
     <Box p={5} spacing={10}>
