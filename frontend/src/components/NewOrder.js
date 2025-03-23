@@ -92,6 +92,7 @@ const NewOrder = () => {
     // Check minimum order
     if (orderItems.length < 1) {
       return setAlert({
+        type: 'error',
         title: 'Minimum order item',
         description: 'You need to order at least one item.'
       });
@@ -100,6 +101,7 @@ const NewOrder = () => {
     // Check no empty items
     if (orderItems.filter((item) => item.product === null).length !== 0) {
       return setAlert({
+        type: 'error',
         title: 'Invalid product(s)',
         description: 'Remove item(s) which are blank.'
       });
@@ -110,6 +112,7 @@ const NewOrder = () => {
     const hasDuplicates = productIds.some((id, index) => productIds.indexOf(id) !== index);
     if (hasDuplicates) {
       return setAlert({
+        type: 'error',
         title: 'Duplicate products',
         description: 'Each product in the order must be unique.'
       });
@@ -119,9 +122,15 @@ const NewOrder = () => {
     try {
       const orderData = orderItems.map(({ id, ...rest }) => rest);
       await orderService.order(orderData, demoAddStr, demoAddStr);
+      setAlert({
+        type: 'success',
+        title: 'Purchase Order Created',
+        description: 'Purchase Order is pending approval.'
+      });
     } catch (error) {
       console.error("Failed to create order:", error);
       setAlert({
+        type: 'error',
         title: 'Order Submission Failed',
         description: 'There was an error submitting your order. Please try again.'
       });
@@ -152,7 +161,7 @@ const NewOrder = () => {
       </HStack>
 
       {alert != null ? 
-        <Alert status='error'>
+        <Alert status={alert.type}>
           <AlertIcon />
           <AlertTitle>{alert?.title}</AlertTitle>
           <AlertDescription>{alert.description}</AlertDescription>
