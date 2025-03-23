@@ -124,7 +124,7 @@ const NewOrder = () => {
     // API call to create purchase order
     try {
       const orderData = orderItems.map(({ id, ...rest }) => rest);
-      await orderService.order(orderData, demoAddStr, demoAddStr);
+      await orderService.createOrder(orderData, demoAddStr, demoAddStr);
       setAlert({
         type: 'success',
         title: 'Purchase Order Created',
