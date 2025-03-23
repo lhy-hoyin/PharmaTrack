@@ -26,7 +26,7 @@ const create_tables_command = `
         );
         CREATE TABLE IF NOT EXISTS purchase_orders(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp INTEGER NOT NULL,
+                timestamp TEXT NOT NULL,
                 items TEXT NOT NULL,
                 bill_to TEXT NOT NULL,
                 deliver_to TEXT NOT NULL,

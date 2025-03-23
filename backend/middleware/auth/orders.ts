@@ -75,7 +75,7 @@ const create = async (
     return;
   }
 
-  const timestamp = Date.now();
+  const timestamp = (new Date()).toISOString();
   const { bill_to, deliver_to, items } = data;
 
   const changes = db.exec(
