@@ -70,7 +70,7 @@ const ViewStock = () => {
             <Tr>
               <Th>ID</Th>
               <Th>Name</Th>
-              <Th>Manufacturer</Th>
+              <Th>Supplier</Th>
               <Th>Total Quantity</Th>
             </Tr>
           </Thead>
@@ -79,7 +79,7 @@ const ViewStock = () => {
               <Tr key={item.id}>
                 <Td>{item.id}</Td>
                 <Td>{item.name}</Td>
-                <Td>{item.manufacturer}</Td>
+                <Td>{item.supplier}</Td>
                 <Td>{item.total_qty}</Td>
               </Tr>
             ))}

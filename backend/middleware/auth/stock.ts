@@ -11,10 +11,10 @@ const view = (
 ) => {
   const stmt = db.prepare(
     `
-    SELECT p.id, p.name, p.manufacturer, SUM(s.quantity) as total_qty
+    SELECT p.id, p.name, p.supplier, SUM(s.quantity) as total_qty
     FROM products p
     JOIN stock s ON p.id = s.product_id
-    GROUP BY p.id, p.name, p.manufacturer
+    GROUP BY p.id, p.name, p.supplier
     `,
   );
 
