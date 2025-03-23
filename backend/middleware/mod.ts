@@ -3,6 +3,10 @@ import register from "./register.ts";
 import logout from "./logout.ts";
 
 import {
+  getUserNameById
+} from "./auth/users.ts";
+
+import {
   view as viewProducts,
   info as getProductDetails,
   add as addProduct
@@ -17,6 +21,7 @@ import viewStock from "./auth/stock.ts";
 
 export {
   login, logout, register,
+  getUserNameById,
   viewProducts, getProductDetails, addProduct,
   viewPurchaseOrderById, createPurchaseOrder,
   viewStock

@@ -2,6 +2,7 @@ import { Application, Router } from "@oak/oak";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import {
   login, logout, register,
+  getUserNameById,
   viewProducts, getProductDetails, addProduct,
   viewPurchaseOrderById, createPurchaseOrder,
   viewStock
@@ -17,8 +18,9 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
 
-authRouter.get("/auth/products/view", viewProducts);
+authRouter.get("/auth/users/:id", getUserNameById);
 authRouter.get("/auth/products/:id", getProductDetails);
+authRouter.get("/auth/products/view", viewProducts);
 authRouter.post("/auth/products/add", addProduct);
 authRouter.get("/auth/orders/:id", viewPurchaseOrderById);
 authRouter.post("/auth/orders/purchase", createPurchaseOrder);

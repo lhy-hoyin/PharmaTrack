@@ -46,6 +46,7 @@ import {
 
 import { useParams } from 'react-router-dom';
 import orderService from '../services/orderService';
+import userService from '../services/userService';
 import productService from '../services/productService';
 
 const PurchaseOrder = () => {
@@ -74,17 +75,23 @@ const PurchaseOrder = () => {
     const fetchDetails = async () => {
       setAlert(null);
       
-      // TODO: handle error when loading
       try {
-
       // Fetch PO details
       const details = await orderService.getDetails(id);
-      setPoDetails(details);
 
       // Setup Stepper stage using status
       const index = steps.findIndex(step => step.title === details.status);
       setActiveStep(index + 1);
 
+      // Parse details into human friendly form
+      setPoDetails({
+        ...details,
+        requester: await userService.fetchNameById(details.requester),
+        approver: await userService.fetchNameById(details?.approver) || "N/A",
+        timestamp: new Date(details.timestamp).toUTCString(),
+      });
+
+      // Fetch item details
       // const itemDetails = await Promise.all(
       //   details.items.map(async (item) => {
       //     const product = await productService.getProduct(item.id);
