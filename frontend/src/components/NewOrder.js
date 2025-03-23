@@ -57,7 +57,10 @@ const NewOrder = () => {
       }
     };
     fetchProducts();
-    addOrderItem();
+
+    if (orderItems.length === 0) {
+      addOrderItem();
+    }
   }, []);
 
   const checkCanRemove = () => {
