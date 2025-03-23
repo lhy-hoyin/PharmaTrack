@@ -24,6 +24,7 @@ import {
   Spinner,
   Center,
   HStack,
+  Tag ,
 } from '@chakra-ui/react';
 import {
     Step,
@@ -59,13 +60,10 @@ const PurchaseOrder = () => {
   ]
 
   const [poDetails, setPoDetails] = useState(null);
-  const [items, setItems] = useState([]);
   const [alert, setAlert] = useState();
   
-  
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -76,29 +74,29 @@ const PurchaseOrder = () => {
       setAlert(null);
       
       try {
-      // Fetch PO details
-      const details = await orderService.getDetails(id);
-
-      // Setup Stepper stage using status
-      const index = steps.findIndex(step => step.title === details.status);
-      setActiveStep(index + 1);
-
-      // Parse details into human friendly form
-      setPoDetails({
-        ...details,
-        requester: await userService.fetchNameById(details.requester),
-        approver: await userService.fetchNameById(details?.approver) || "N/A",
-        timestamp: new Date(details.timestamp).toUTCString(),
-      });
-
-      // Fetch item details
-      // const itemDetails = await Promise.all(
-      //   details.items.map(async (item) => {
-      //     const product = await productService.getProduct(item.id);
-      //     return { ...product, quantity: item.quantity };
-      //   })
-      // );
-      // setItems(itemDetails);
+        // Fetch PO details
+        const details = await orderService.getDetails(id);
+  
+        // Setup Stepper stage using status
+        const index = steps.findIndex(step => step.title === details.status);
+        setActiveStep(index + 1);
+  
+        // Fetch item details
+        const itemDetails = await Promise.all(
+          JSON.parse(details.items).map(async (item) => {
+            const { id, name, description, supplier } = await productService.getInfo(item.product);
+          return { id, name, description, supplier, quantity: item.qty };
+          })
+        );
+  
+        // Parse details into human friendly form
+        setPoDetails({
+          ...details,
+          items: itemDetails,
+          requester: await userService.fetchNameById(details.requester),
+          approver: await userService.fetchNameById(details?.approver) || "N/A",
+          timestamp: new Date(details.timestamp).toUTCString(),
+        });
       }
       catch(error) {
         console.error(error)
@@ -113,6 +111,7 @@ const PurchaseOrder = () => {
     fetchDetails();
   }, []);
 
+  // Loading or Error state
   if (!poDetails) {
     return (<>{ 
       alert == null ?
@@ -127,7 +126,6 @@ const PurchaseOrder = () => {
         </Alert>
     }</>);
   }
-  
 
   return (
     <Box p={5} spacing={10}>
@@ -153,7 +151,6 @@ const PurchaseOrder = () => {
       ))}
       </Stepper>
 
-      {/* Addresses */}
       <HStack spacing={8} align="start">
         <Box flex="1">
           <Text fontWeight="bold" mb={2}>Bill To:</Text>
@@ -179,33 +176,30 @@ const PurchaseOrder = () => {
         </Box>
       </HStack>
 
-      {/* PO Details */}
       <Box mt={5}>
-        
-        <Box>PO ID: {poDetails.id}</Box>
+        <Box>Purchase Order Number: {poDetails.id}</Box>
         <Box>Timestamp: {poDetails.timestamp}</Box>
-        <Box>Requester: {poDetails.requester}</Box>
-        <Box>Approver: {poDetails.approver}</Box>
+        <Box>Requester: <Tag>{poDetails.requester}</Tag></Box>
+        <Box>Approver: <Tag>{poDetails.approver}</Tag></Box>
       </Box>
 
       <Divider my={5} />
 
-      {/* Items Table */}
       <Table>
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Name</Th>
-            <Th>Manufacturer</Th>
+            <Th>Description</Th>
+            <Th>Supplier</Th>
             <Th>Quantity</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {items.map((item) => (
+          {poDetails.items.map((item) => (            
             <Tr key={item.id}>
-              <Td>{item.id}</Td>
               <Td>{item.name}</Td>
-              <Td>{item.manufacturer}</Td>
+              <Td>{item.description}</Td>
+              <Td>{item.supplier}</Td>
               <Td>{item.quantity}</Td>
             </Tr>
           ))}
@@ -227,8 +221,8 @@ const PurchaseOrder = () => {
         <ModalContent>
           <ModalHeader>Confirm Approval</ModalHeader>
           <ModalBody>
-            You are about to approve PO#{poDetails.id} created by{' '}
-            {poDetails.requester}.
+            You are about to approve
+            PO#{poDetails.id} created by <Tag>{poDetails.requester}</Tag>.
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={() => { /* Approve logic */ }}>

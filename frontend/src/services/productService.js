@@ -21,8 +21,8 @@ const fetchProducts = async () => {
   return data;
 }
 
-const getProductInfo = async (id) => {
-  const response = await fetch(`/auth/product/${id}`, {
+const getInfo = async (id) => {
+  const response = await fetch(`/auth/products/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -56,5 +56,5 @@ const addProduct = async (productData) => {
 };
 
 export default {
-    fetchProducts, getProductInfo, addProduct
+    fetchProducts, getInfo, addProduct
 };
