@@ -33,6 +33,7 @@ const AddProductModal = ({ isOpen, onClose }) => {
       supplier,
     })
     .then((response) => {
+      // TODO: update product options
       onClose(); // close modal
     });
 

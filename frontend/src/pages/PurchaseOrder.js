@@ -215,7 +215,8 @@ const PurchaseOrder = () => {
         </Flex>
       )}
 
-      {/* Confirmation Modal */}
+      
+      {/* Confirmation Modal  - TODO: move to its own file*/}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
